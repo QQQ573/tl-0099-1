@@ -5,6 +5,7 @@ import { DEFAULT_PRESET } from '../types'
 interface FireworkState {
   preset: FireworkPreset
   isPaused: boolean
+  isAutoLaunch: boolean
   fireworkInstances: FireworkInstance[]
   selectedParticle: ParticleData | null
   showGUI: boolean
@@ -12,6 +13,8 @@ interface FireworkState {
   updatePreset: (updates: Partial<FireworkPreset>) => void
   togglePause: () => void
   setPaused: (paused: boolean) => void
+  toggleAutoLaunch: () => void
+  setAutoLaunch: (auto: boolean) => void
   addFireworkInstance: (fw: FireworkInstance) => void
   removeFireworkInstance: (id: string) => void
   clearFireworkInstances: () => void
@@ -25,6 +28,7 @@ interface FireworkState {
 export const useFireworkStore = create<FireworkState>((set) => ({
   preset: DEFAULT_PRESET,
   isPaused: false,
+  isAutoLaunch: false,
   fireworkInstances: [],
   selectedParticle: null,
   showGUI: true,
@@ -34,7 +38,9 @@ export const useFireworkStore = create<FireworkState>((set) => ({
       preset: { ...state.preset, ...updates },
     })),
   togglePause: () => set((state) => ({ isPaused: !state.isPaused, selectedParticle: state.isPaused ? state.selectedParticle : null })),
-  setPaused: (paused: boolean) => set({ isPaused: paused, selectedParticle: paused ? undefined : null }),
+  setPaused: (paused: boolean) => set({ isPaused: paused, selectedParticle: paused ? null : null }),
+  toggleAutoLaunch: () => set((state) => ({ isAutoLaunch: !state.isAutoLaunch })),
+  setAutoLaunch: (auto: boolean) => set({ isAutoLaunch: auto }),
   addFireworkInstance: (fw: FireworkInstance) =>
     set((state) => ({ fireworkInstances: [...state.fireworkInstances, fw] })),
   removeFireworkInstance: (id: string) =>

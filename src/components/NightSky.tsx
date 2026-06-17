@@ -14,13 +14,13 @@ export default function NightSky() {
 
     for (let i = 0; i < STAR_COUNT; i++) {
       pos[i * 3] = (Math.random() - 0.5) * 200
-      pos[i * 3 + 1] = Math.random() * 80 + 5
+      pos[i * 3 + 1] = Math.random() * 120 - 10
       pos[i * 3 + 2] = (Math.random() - 0.5) * 200
 
-      sz[i] = Math.random() * 1.5 + 0.3
+      sz[i] = Math.random() * 2.0 + 0.5
 
-      const brightness = 0.5 + Math.random() * 0.5
-      const blueShift = Math.random() * 0.3
+      const brightness = 0.6 + Math.random() * 0.4
+      const blueShift = Math.random() * 0.2
       col[i * 3] = brightness * (1 - blueShift)
       col[i * 3 + 1] = brightness * (1 - blueShift * 0.5)
       col[i * 3 + 2] = brightness

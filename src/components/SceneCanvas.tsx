@@ -1,6 +1,6 @@
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import * as THREE from 'three'
-import { Canvas, type ThreeEvent } from '@react-three/fiber'
+import { Canvas, useFrame, type ThreeEvent } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import NightSky from './NightSky'
@@ -52,6 +52,31 @@ function ClickHandler() {
   )
 }
 
+function AutoLauncher() {
+  const { isAutoLaunch, isPaused, preset, addFireworkInstance } = useFireworkStore()
+  const timerRef = useRef(0)
+  const presetRef = useRef(preset)
+
+  presetRef.current = preset
+
+  useFrame((state, delta) => {
+    if (!isAutoLaunch || isPaused) return
+
+    timerRef.current += delta
+    const interval = presetRef.current.launch.launchInterval
+    if (timerRef.current >= interval) {
+      timerRef.current = 0
+      const x = (Math.random() - 0.5) * 20
+      const z = (Math.random() - 0.5) * 10 - 3
+      const origin = new THREE.Vector3(x, 0, z)
+      const fw = createFireworkInstance(origin, presetRef.current)
+      addFireworkInstance(fw)
+    }
+  })
+
+  return null
+}
+
 function GroundPlane() {
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
@@ -71,27 +96,30 @@ export default function SceneCanvas() {
         gl.setClearColor('#0a0a1a')
       }}
     >
-      <fog attach="fog" args={['#0a0a1a', 40, 120]} />
-      <ambientLight intensity={0.1} />
+      <fog attach="fog" args={['#0a0a1a', 50, 150]} />
+      <ambientLight intensity={0.05} />
       <NightSky />
       <GroundPlane />
       <ClickHandler />
+      <AutoLauncher />
       <FireworkRenderer />
       <OrbitControls
         enablePan={false}
         enableDamping
         dampingFactor={0.05}
-        minPolarAngle={0}
-        maxPolarAngle={Math.PI / 2.1}
+        minPolarAngle={0.2}
+        maxPolarAngle={Math.PI / 1.8}
         minDistance={5}
-        maxDistance={60}
+        maxDistance={80}
+        target={[0, 6, 0]}
       />
-      <EffectComposer>
+      <EffectComposer multisampling={0} enableNormalPass={false}>
         <Bloom
           luminanceThreshold={0.2}
           luminanceSmoothing={0.9}
           intensity={1.5}
-          radius={0.8}
+          radius={0.5}
+          mipmapBlur
         />
       </EffectComposer>
     </Canvas>

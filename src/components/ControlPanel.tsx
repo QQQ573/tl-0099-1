@@ -4,7 +4,7 @@ import { downloadPresetJson, importPresetFromJson } from '../utils/presetValidat
 import type { FireworkPreset } from '../types'
 
 export default function ControlPanel() {
-  const { isPaused, togglePause, clearFireworkInstances, preset, importPreset } = useFireworkStore()
+  const { isPaused, togglePause, isAutoLaunch, toggleAutoLaunch, clearFireworkInstances, preset, importPreset } = useFireworkStore()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleExport = () => {
@@ -62,6 +62,18 @@ export default function ControlPanel() {
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 6h18M8 6V4h8v2M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6" /></svg>
         Clear
+      </button>
+
+      <button
+        onClick={toggleAutoLaunch}
+        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-sm transition-all duration-200
+          ${isAutoLaunch
+            ? 'bg-orange-500/20 text-orange-400 border border-orange-500/40 hover:bg-orange-500/30'
+            : 'bg-gray-500/20 text-gray-400 border border-gray-500/40 hover:bg-gray-500/30'
+          }`}
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></svg>
+        Auto
       </button>
 
       <button

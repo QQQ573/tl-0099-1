@@ -27,6 +27,7 @@ export class ParticlePool {
       endColor: new THREE.Color(),
       alpha: 0,
       size: 0,
+      initialSize: 0,
       age: 0,
       maxAge: 0,
       phase: 'burst',

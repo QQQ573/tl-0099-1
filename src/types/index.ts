@@ -39,6 +39,7 @@ export interface ParticleData {
   endColor: THREE.Color
   alpha: number
   size: number
+  initialSize: number
   age: number
   maxAge: number
   phase: 'launch' | 'burst' | 'fade'
