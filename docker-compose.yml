@@ -1,0 +1,7 @@
+services:
+  fireworks-simulator:
+    build: .
+    container_name: fireworks-simulator
+    ports:
+      - "8080:80"
+    restart: unless-stopped
